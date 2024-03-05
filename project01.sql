@@ -104,7 +104,12 @@ CREATE TABLE oglas (id INT PRIMARY KEY auto_increment,
 id_nekretnine INT unique NOT NULL,
 cena FLOAT,
 datum_postavkeoglasa DATETIME NOT NULL,
-datum_istekaoglasa DATETIME);
+datum_istekaoglasa DATETIME,
+/*CONSTRAINT chk_cena CHECK (cena>50),*//*jako retko se koristi...*/
+CONSTRAINT fk_oglas_id FOREIGN KEY (id_nekretnine) REFERENCES nekretnina(id));
+/* CONSTRAINT fk_oglas_id FOREIGN KEY (id_nekretnine) REFERENCES nekretnina(id) ---
+ ---> ogranicenje da kada DODAJEM NOVI OGLAS MORA PRVO DA POSTOJI TAj id_nekretnine
+ u tabeli nekretnina kao id te nekretnine */
 
 INSERT INTO oglas VALUES('10','10','22.000','2009-12-23 13:00','2010-2-22'),
 ('11','11','55.000','2009-3-23 09:00','2009-6-23'),
@@ -141,6 +146,31 @@ SELECT AVG(plata) FROM zaposleni; /* vrati prosecnu platu iz tabele zaposleni*/
 
 SELECT avg(plata) FROM zaposleni GROUP BY grad;/* vraca prosecnu platu od zaposlenih,
  sortirano po gradovima */
+
+SELECT AVG(cena) AS prosek FROM oglas; /* AS nesto - koristi se da bi naziv kolone umesto
+avg(cena) bio to nesto sto smo upisali iza AS */
+
+SELECT SUM(cena) AS suma FROM oglas WHERE year(datum_postavkeoglasa)>2010;
+
+SELECT COUNT(prezime) FROM zaposleni WHERE grad='Novi Sad';
+
+SELECT max(cena) FROM oglas;
+
+SELECT COUNT(id) AS broj_nekretnina FROM nekretnina;
+
+SELECT adresa, count(id) FROM nekretnina group by adresa;/* grupise broj nekretnina po adresama... */
+
+SELECT adresa, count(id) AS broj FROM nekretnina group by adresa HAVING broj=1;
+/* selektuje adrese i ispisuje adrese na kojima je broj nekretnina jednak sa 1 */
+
+/* FOREIGN KEY - foreign key u jednoj tabeli predstavlja PRIMARY KEY u drugoj tabeli */
+/* RELACIJE - veze izmedju tabela, realizuju se preko stranih kljuceva
+Prema TIPU relacije mogu biti: identifikujuce i neidentifikujuce 
+
+Prema kardinalitetu, veze mogu biti: 1:1 - jedan na jedan
+									 1:N - jedan na vise
+									 N:M - vise na vise*/
+
 
 
 
