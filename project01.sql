@@ -11,8 +11,8 @@ INSERT INTO student VALUES('123', 'Marko', 'Marek');
 INSERT INTO student(indeks, prezime) VALUES ('456', 'Petrovic');
 
 INSERT INTO student VALUES ('124', 'Darko', 'Bozicic','12-12-2003'),
- ('125', 'zoran', 'Bozicic', '13-11-2003'),
- ('126', 'borko', 'kindzer', '14-10-2003');
+('125', 'zoran', 'Bozicic', '13-11-2003'),
+('126', 'borko', 'kindzer', '14-10-2003');
 
 SELECT ime, prezime, indeks FROM student;/* selektuej sve studente iz tabele student
  i ispisuje ih sa izabranim parametrima ( ime, prezime, indeks )*/
@@ -82,6 +82,72 @@ SELECT ime, prezime FROM studenti WHERE prosecna_ocena > 8.0;
 
 SELECT sifra_zaposlenog FROM nastavnici WHERE AorP= false AND year(datum)=2003;
 /* year(datum)=2003 || funkcija za GODINE, godinu u datumu(DATE) kao vrsti inputa */
+
+/* -------------------------------------------------------------------------------------------------- */
+/* ZADATAK 2 || 17/1 prezentacija slajd */
+/* za ovaj zadatak, nova sema, tabele ali bez korisnika i privilegija...*/
+/* -------------------------------------------------------------------------------------------------- */
+DROP SCHEMA nekretnine;
+CREATE SCHEMA IF NOT EXISTS nekretnine;
+USE nekretnine;
+
+CREATE TABLE nekretnina (id INT PRIMARY KEY auto_increment ,
+adresa VARCHAR(45) NOT NULL,
+datum_izgradnje DATETIME NOT NULL,
+ime_prezime VARCHAR(45) NOT NULL);
+
+INSERT INTO nekretnina VALUES('1','vuka karadzica 12', '2009-12-23 12:00', 'Zdravko Palikuca'),
+('2','vuka karadzica 13', '2010-12-23 12:00', 'Colic Zfarko'),
+('3','vuka karadzica 14', '2011-12-23 12:00', 'Boris Boris');
+
+CREATE TABLE oglas (id INT PRIMARY KEY auto_increment,
+id_nekretnine INT unique NOT NULL,
+cena FLOAT,
+datum_postavkeoglasa DATETIME NOT NULL,
+datum_istekaoglasa DATETIME);
+
+INSERT INTO oglas VALUES('10','10','22.000','2009-12-23 13:00','2010-2-22'),
+('11','11','55.000','2009-3-23 09:00','2009-6-23'),
+('12','12','102.000','2011-12-23 11:00','2012-2-25');
+
+CREATE TABLE zaposleni (ime VARCHAR(35) NOT NULL,
+prezime VARCHAR(35) PRIMARY KEY NOT NULL,
+grad VARCHAR(35) NOT NULL,
+plata FLOAT NOT NULL);
+
+INSERT INTO zaposleni VALUES ('Zikica','Boogie','BeGe','80.000'),
+('Laza','Lazarevic','Novi Sad','70.000'),
+('Komsija','Bre','Nis','110.000');
+
+/* UPITI */
+DELETE FROM nekretnina WHERE year(datum_izgradnje)<1999;
+
+SELECT ime_prezime FROM nekretnina WHERE year(datum_izgradnje)>2005;
+
+SELECT ime_prezime FROM nekretnina WHERE adresa LIKE '%13%';
+/* LIKE - lici kao... napisana vrednost, '%beograd%' - znak posto(%), oznacava da nije bitno
+sta se nalazi pre ove vreednosti i sta je posle ove vrednosti... */ 
+
+SELECT * FROM oglas WHERE cena<200000;
+
+SELECT * FROM oglas WHERE cena>50 AND datum_postavkeoglasa > '2020-12-12';
+
+SELECT ime, prezime FROM zaposleni ORDER BY plata DESC LIMIT 3;
+/* ORDER BY - sortiraj po
+   DESC - descending ili ascending
+   LIMIT 3 - na 3 rezultata limitiramo, jerr nam treba 3 najvece plate...*/ 
+
+SELECT AVG(plata) FROM zaposleni; /* vrati prosecnu platu iz tabele zaposleni*/
+
+SELECT avg(plata) FROM zaposleni GROUP BY grad;/* vraca prosecnu platu od zaposlenih,
+ sortirano po gradovima */
+
+
+
+
+
+
+
 
 
 
