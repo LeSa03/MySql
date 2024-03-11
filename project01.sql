@@ -109,7 +109,7 @@ datum_istekaoglasa DATETIME,
 CONSTRAINT fk_oglas_id FOREIGN KEY (id_nekretnine) REFERENCES nekretnina(id));
 /* CONSTRAINT fk_oglas_id FOREIGN KEY (id_nekretnine) REFERENCES nekretnina(id) ---
  ---> ogranicenje da kada DODAJEM NOVI OGLAS MORA PRVO DA POSTOJI TAj id_nekretnine
- u tabeli nekretnina kao id te nekretnine */
+ u tabeli nekretnina */
 
 INSERT INTO oglas VALUES('10','10','22.000','2009-12-23 13:00','2010-2-22'),
 ('11','11','55.000','2009-3-23 09:00','2009-6-23'),
@@ -171,11 +171,60 @@ Prema kardinalitetu, veze mogu biti: 1:1 - jedan na jedan
 									 1:N - jedan na vise
 									 N:M - vise na vise*/
 
+/* NOVA SEMA  */
 
+CREATE SCHEMA IF NOT EXISTS primer22;
+USE primer22;
 
+CREATE TABLE IF NOT EXISTS kuca(id INT PRIMARY KEY NOT NULL,
+adresa INT,
+vlasnik INT UNIQUE,/* posto je unique, veza je 1:1, pa ne moze jedan vlasnik vise kuca...*/
+CONSTRAINT fk_vlasnik_kuca FOREIGN KEY (vlasnik) REFERENCES vlasnik(idV),
+CONSTRAINT fk_adresa_kuca FOREIGN KEY (adresa) REFERENCES adresa(idA));
+/* fk_vkasnik_kuca -> predstavlja FOREIGN KEY, dakle, vlasnik
+iz tabele kuca, je zapravo FOREIGN KEY iz tabele vlasnik, dakle predstavlja idV iz tabele VLASNIK u ovoj tabeli(kuca)... */
 
+CREATE TABLE IF NOT EXISTS vlasnik(idV INT PRIMARY KEY NOT NULL,
+ime VARCHAR(25),
+prezime VARCHAR(25));
 
+CREATE TABLE adresa(
+idA INT PRIMARY KEY,
+grad VARCHAR(25),
+broj VARCHAR(10),
+ulica VARCHAR(35)
+);
 
+INSERT INTO kuca VALUES (1, 25, 2);
+
+INSERT INTO vlasnik VALUES (1, 'Marko', 'Markovic'), (2, 'Petar', 'Petrovic');
+
+/* hocemo 1:N , izmedju adresa i nekretnina, dakle na jednoj adresi da moze vise nekretnina...  */
+
+/* tabela za tehnicku opremljenost kuce... */
+
+CREATE TABLE teh_oprema(
+id INT PRIMARY KEY,
+naziv VARCHAR(20));
+
+INSERT INTO teh_oprema VALUES(1, 'klima'), (2, 'televizor'), (3, 'masina');
+
+CREATE TABLE kuca_has_teh_oprema(
+kuca INT,
+teh_oprema INT,
+PRIMARY KEY(kuca, teh_oprema),
+CONSTRAINT fk_kuca_kucahastehoprema FOREIGN KEY (kuca) REFERENCES kuca(id),
+CONSTRAINT fk_tehoprema_kuca_has_op FOREIGN KEY (teh_oprema) REFERENCES teh_oprema(id));
+
+INSERT INTO kuca_has_teh_oprema VALUES(1, 1), (1,2), (2,1), (3,2); /* (1, 1) -> kuca jedan ima klimu; (1, 2) -> kuca jedan ima televizor... */
+
+SELECT * FROM kuca;
+SELECT * FROM vlasnik;
+SELECT * FROM adresa;
+
+SELECT kuca.id, kuca.adresa, vlasnik.ime, vlasnik.prezime FROM kuca, vlasnik WHERE kuca.vlasnik = vlasnik.idV;
+
+SELECT kuca, teh_oprema, naziv FROM kuca_has_teh_oprema, teh_oprema WHERE kuca_has_teh_oprema.teh_oprema.id AND kuca_has_teh_oprema.kuca = 2;
 
 
 
