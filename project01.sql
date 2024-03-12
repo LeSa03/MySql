@@ -221,10 +221,33 @@ INSERT INTO kuca_has_teh_oprema VALUES(1, 1), (1,2), (2,1), (3,2); /* (1, 1) -> 
 SELECT * FROM kuca;
 SELECT * FROM vlasnik;
 SELECT * FROM adresa;
+SELECT *FROM teh_oprema;
+SELECT * FROM kuca_has_teh_oprema;
 
 SELECT kuca.id, kuca.adresa, vlasnik.ime, vlasnik.prezime FROM kuca, vlasnik WHERE kuca.vlasnik = vlasnik.idV;
 
-SELECT kuca, teh_oprema, naziv FROM kuca_has_teh_oprema, teh_oprema WHERE kuca_has_teh_oprema.teh_oprema.id AND kuca_has_teh_oprema.kuca = 2;
+SELECT kuca, teh_oprema, naziv FROM kuca_has_teh_oprema, teh_oprema WHERE kuca_has_teh_oprema.teh_oprema = teh_oprema.id AND kuca_has_teh_oprema.kuca = 1;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
