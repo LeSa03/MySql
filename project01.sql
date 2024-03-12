@@ -241,34 +241,38 @@ USE fax;
 CREATE TABLE student(
 ime VARCHAR(20) NOT NULL,
 prezime VARCHAR(20) NOT NULL,
-br_indeksa INT NOT NULL,
-jmbg INT NOT NULL,
-id_student INT PRIMARY KEY NOT NULL);
+br_indeksa VARCHAR(20) NOT NULL,
+jmbg VARCHAR(20) NOT NULL,
+id_student INT PRIMARY KEY);
 
 CREATE TABLE nastavnik(
 ime VARCHAR(20) NOT NULL,
 prezime VARCHAR(20) NOT NULL,
-sifra_zap VARCHAR(20) NOT NULL,
-id INT PRIMARY KEY NOT NULL,
-jmbg INT NOT NULL,
-m_plata INT NOT NULL
+sifra_zap INT NOT NULL,
+id INT PRIMARY KEY,
+jmbg VARCHAR(20) NOT NULL,
+m_plata FLOAT NOT NULL
 );
 
 CREATE TABLE predmet(
-id INT PRIMARY KEY NOT NULL,
-sifra_predmeta VARCHAR(20) NOT NULL,
-naziv VARCHAR(25) NOT NULL,
-br_pred_ned VARCHAR(20) NOT NULL,
-br_vezbi_ned VARCHAR(20) NOT NULL);
+id INT PRIMARY KEY,
+sifra_predmeta INT NOT NULL,
+naziv VARCHAR(40) NOT NULL,
+br_predavanja INT NOT NULL,
+br_vezbi INT NOT NULL,
+profesor_id INT NOT NULL,
+asistent_id INT NOT NULL,
+CONSTRAINT fk_prof_predmet FOREIGN KEY (profesor_id) REFERENCES nastavnik(id),
+CONSTRAINT fk_asistent_predmet FOREIGN KEY (asistent_id) REFERENCES nastavnik(id)
+);
 
 CREATE TABLE polaganje(
-id_studenta INT,
-predmet VARCHAR(20),
-datum_polaganja DATE,
-ostv_bodovi INT,
-PRIMARY KEY(id_studenta, predmet),
-CONSTRAINT fk_idstudenta_polaganje FOREIGN KEY (id_studenta) REFERENCES student(id_student),
-CONSTRAINT fk_predmet_polaganje FOREIGN KEY (predmet) REFERENCES predmet(naziv));
+student_id INT NOT NULL,
+predmet_id INT NOT NULL,
+datum_polaganja DATE NOT NULL,
+ostv_bodovi INT NOT NULL,
+
+);
 
 INSERT INTO student VALUES ('aleksa', 'medjed', 270070, 12345, 1), ('mare', 'care', 270080, 54321, 2), ('pop', 'ic', 270090, 010101, 3);
 
