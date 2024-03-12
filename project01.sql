@@ -228,18 +228,53 @@ SELECT kuca.id, kuca.adresa, vlasnik.ime, vlasnik.prezime FROM kuca, vlasnik WHE
 
 SELECT kuca, teh_oprema, naziv FROM kuca_has_teh_oprema, teh_oprema WHERE kuca_has_teh_oprema.teh_oprema = teh_oprema.id AND kuca_has_teh_oprema.kuca = 1;
 
+SELECT * FROM kuca, adresa, teh_oprema, kuca_has_teh_oprema WHERE adresa.grad = 'Beograd' AND teh_oprema.naziv = 'usisivac' AND kuca.adresa = adresa.idA AND kuca_has_teh_oprema.kuca = kuca.id AND kuca_has_teh_oprema.teh_oprema = teh_oprema.id;
 
+/*------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  */
+/*------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+/* Novi Zadatak, srudent predmet nastavnik i polaganja */
 
+CREATE SCHEMA IF NOT EXISTS fax;
+USE fax;
 
+CREATE TABLE student(
+ime VARCHAR(20) NOT NULL,
+prezime VARCHAR(20) NOT NULL,
+br_indeksa INT NOT NULL,
+jmbg INT NOT NULL,
+id_student INT PRIMARY KEY NOT NULL);
 
+CREATE TABLE nastavnik(
+ime VARCHAR(20) NOT NULL,
+prezime VARCHAR(20) NOT NULL,
+sifra_zap VARCHAR(20) NOT NULL,
+id INT PRIMARY KEY NOT NULL,
+jmbg INT NOT NULL,
+m_plata INT NOT NULL
+);
 
+CREATE TABLE predmet(
+id INT PRIMARY KEY NOT NULL,
+sifra_predmeta VARCHAR(20) NOT NULL,
+naziv VARCHAR(25) NOT NULL,
+br_pred_ned VARCHAR(20) NOT NULL,
+br_vezbi_ned VARCHAR(20) NOT NULL);
 
+CREATE TABLE polaganje(
+id_studenta INT,
+predmet VARCHAR(20),
+datum_polaganja DATE,
+ostv_bodovi INT,
+PRIMARY KEY(id_studenta, predmet),
+CONSTRAINT fk_idstudenta_polaganje FOREIGN KEY (id_studenta) REFERENCES student(id_student),
+CONSTRAINT fk_predmet_polaganje FOREIGN KEY (predmet) REFERENCES predmet(naziv));
 
+INSERT INTO student VALUES ('aleksa', 'medjed', 270070, 12345, 1), ('mare', 'care', 270080, 54321, 2), ('pop', 'ic', 270090, 010101, 3);
 
+INSERT INTO nastavnik VALUES ('nastavnik', 'nast', 'sz10', 1, 11111, 25000), ('nastavnik2', 'nast2', 'sz11', 2, 222222, 35000), ('nastavnik3', 'nast3', 'sz12', 3, 333333, 45000);
 
-
-
+INSERT INTO predmet VALUES (1, 'sp001', 'predmet1', '3predNed', '3vezbNed'), (2, 'sp002', 'predmet2', '2predNed', '2vezbNed');
 
 
 
