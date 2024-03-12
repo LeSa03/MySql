@@ -292,7 +292,9 @@ INSERT INTO nastavnik VALUES ('nastavnik', 'nast', 10, 1, '11111', 25000), ('nas
 
 INSERT INTO predmet VALUES (1, 1, 'predmet1', 7, 7, 1, 2), (2, 4, 'predmet2', 3, 3, 2, 1);
 
-INSERT INTO polaganje VALUES (1, 1, 1, '2022-12-12', 72), (2, 2, 1, '2022-12-13', 35);
+INSERT INTO polaganje VALUES (3, 1, 2, '2022-12-12', 100), (4, 2, 2, '2022-12-13', 50);
+
+
 
 /*---- ------ ----- ---- ----- ------ ----- --- ---- -----*/
 /*UPITI*/
@@ -302,6 +304,15 @@ SELECT * FROM student WHERE prezime='ic';
 SELECT * FROM predmet WHERE br_predavanja>5;
 
 SELECT * FROM nastavnik WHERE m_plata>30000 AND m_plata<100000;
+
+SELECT student.ime FROM polaganje, student, predmet WHERE polaganje.predmet_id = predmet.id AND predmet.naziv = 'predmet1' AND student.id_student = polaganje.student_id;
+
+SELECT predmet.naziv FROM polaganje, student, predmet WHERE polaganje.predmet_id = predmet.id AND student.ime = 'mare' AND polaganje.student_id = student.id_student AND student.prezime='care';
+
+SELECT AVG(polaganje.ostv_bodovi) FROM polaganje, predmet WHERE polaganje.predmet_id = predmet.id AND predmet.naziv='predmet2';
+
+
+
 
 
 
