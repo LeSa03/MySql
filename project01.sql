@@ -267,19 +267,41 @@ CONSTRAINT fk_asistent_predmet FOREIGN KEY (asistent_id) REFERENCES nastavnik(id
 );
 
 CREATE TABLE polaganje(
+id INT PRIMARY KEY,
 student_id INT NOT NULL,
 predmet_id INT NOT NULL,
 datum_polaganja DATE NOT NULL,
 ostv_bodovi INT NOT NULL,
-
+CONSTRAINT fk_student_polaganje FOREIGN KEY (student_id) REFERENCES student(id_student),
+CONSTRAINT fk_predmet_polaganje FOREIGN KEY (predmet_id) REFERENCES predmet(id)
 );
 
-INSERT INTO student VALUES ('aleksa', 'medjed', 270070, 12345, 1), ('mare', 'care', 270080, 54321, 2), ('pop', 'ic', 270090, 010101, 3);
+CREATE TABLE pohadjanje(
+student_id INT NOT NULL,
+predmet_id INT NOT NULL,
+PRIMARY KEY(student_id, predmet_id),
+CONSTRAINT fk_student_pohadjanje FOREIGN KEY (student_id) REFERENCES student(id_student),
+CONSTRAINT fk_predmet_pohadjanje FOREIGN KEY (predmet_id) REFERENCES predmet(id)
+);
 
-INSERT INTO nastavnik VALUES ('nastavnik', 'nast', 'sz10', 1, 11111, 25000), ('nastavnik2', 'nast2', 'sz11', 2, 222222, 35000), ('nastavnik3', 'nast3', 'sz12', 3, 333333, 45000);
 
-INSERT INTO predmet VALUES (1, 'sp001', 'predmet1', '3predNed', '3vezbNed'), (2, 'sp002', 'predmet2', '2predNed', '2vezbNed');
 
+INSERT INTO student VALUES ('aleksa', 'medjed', '270070', '12345', 1), ('mare', 'care', '270080', '54321', 2), ('pop', 'ic', '270090', '010101', 3);
+
+INSERT INTO nastavnik VALUES ('nastavnik', 'nast', 10, 1, '11111', 25000), ('nastavnik2', 'nast2', 11, 2, '222222', 35000), ('nastavnik3', 'nast3', 12, 3, '333333', 45000);
+
+INSERT INTO predmet VALUES (1, 1, 'predmet1', 7, 7, 1, 2), (2, 4, 'predmet2', 3, 3, 2, 1);
+
+INSERT INTO polaganje VALUES (1, 1, 1, '2022-12-12', 72), (2, 2, 1, '2022-12-13', 35);
+
+/*---- ------ ----- ---- ----- ------ ----- --- ---- -----*/
+/*UPITI*/
+
+SELECT * FROM student WHERE prezime='ic';
+
+SELECT * FROM predmet WHERE br_predavanja>5;
+
+SELECT * FROM nastavnik WHERE m_plata>30000 AND m_plata<100000;
 
 
 
