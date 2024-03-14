@@ -311,7 +311,37 @@ SELECT predmet.naziv FROM polaganje, student, predmet WHERE polaganje.predmet_id
 
 SELECT AVG(polaganje.ostv_bodovi) FROM polaganje, predmet WHERE polaganje.predmet_id = predmet.id AND predmet.naziv='predmet2';
 
+SELECT COUNT(predmet.id) as broj_predmeta, nastavnik.ime, nastavnik.prezime FROM nastavnik, predmet 
+WHERE predmet.profesor_id = nastavnik.id GROUP BY nastavnik.ime, nastavnik.prezime HAVING broj_predmeta >= 2;
 
+/* --------------------------------------------------------------------------------------------------------------------------------------------------------------- */
+/* Model se sastoji iz zzaposlenih i projekata, Zaposleni ima: id, ime, prezime i platu. Projekat ima: id, naziv, predvidjeno trajanje(u danima). 
+   Jedan zaposleni radi na jednom projektu, a na projektu mmoze da radi vise zaposlenih.
+   Zaposleni moze, a ne mora da ima jednog nadredjenog zaposlenog.
+   Jedan zaposleni moze da bude nadredjeni za vise zaposlenih.
+   dodati bar 3 projekta i 10 zaposlenih od kojih bar 5 imaju nadredjenog
+   8 zaposlenih su angazovani na projektima
+   niko nije angazovan na trecem projektu*/
+
+CREATE SCHEMA IF NOT EXISTS zaposleni_projekat;
+USE zaposleni_projekat;
+
+CREATE TABLE IF NOT EXISTS projekat(
+id_p INT PRIMARY KEY,
+naziv TEXT NOT NULL,
+trajanje INT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS zaposleni(
+id_z INT PRIMARY KEY,
+ime TEXT NOT NULL,
+prezime TEXT NOT NULL,
+plata INT NOT NULL,
+projekat_id INT,
+nadredjeni_id INT,
+CONSTRAINT fk_projekat_zaposleni FOREIGN KEY (projekat_id) REFERENCES projekat(id_p),
+CONSTRAINT fk_nadredjeni_zaposleni FOREIGN KEY (nadredjeni_id) REFERENCES zaposleni(id_z)
+);
 
 
 
