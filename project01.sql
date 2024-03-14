@@ -343,15 +343,35 @@ CONSTRAINT fk_projekat_zaposleni FOREIGN KEY (projekat_id) REFERENCES projekat(i
 CONSTRAINT fk_nadredjeni_zaposleni FOREIGN KEY (nadredjeni_id) REFERENCES zaposleni(id_z)
 );
 
+INSERT INTO projekat VALUES (1, 'projekat1', 100), (2, 'projekat2', 50), (3, 'Atlas projekat', 720);
+
+INSERT INTO zaposleni VALUES (1, 'Zaposleni1','Zaposleni1', 50, 1, NULL),
+(2, 'Zaposleni2','Zaposleni12', 150, 1, 1),
+(3, 'Zaposleni3','Zaposleni13', 250, 2, 1),
+(4, 'Zaposleni4','Zaposleni14', 350, NULL, 2),
+(5, 'Zaposleni5','Zaposleni15', 450, 2, 3),
+(6, 'Zaposleni6','Zaposleni16', 550, 1, 2),
+(7, 'Zaposleni7','Zaposleni17', 650, NULL, NULL),
+(8, 'Zaposleni8','Zaposleni18', 57, 2, NULL),
+(9, 'Zaposleni9','Zaposleni19', 69, 2, NULL),
+(10, 'Zaposleni10','Zaposleni10', 150, 1, NULL);
 
 
+SELECT * FROM zaposleni, projekat WHERE zaposleni.projekat_id = projekat.id_p; /* implicitni JOIN */
 
+/* TIPOVI JOIN-ova :: inner join, left outer join, right outer join, full outer join. */
 
+SELECT * FROM zaposleni INNER JOIN projekat ON zaposleni.projekat_id = projekat.id_p;
 
+SELECT * FROM zaposleni LEFT OUTER JOIN projekat ON zaposleni.projekat_id = projekat.id_p;
 
+SELECT * FROM zaposleni RIGHT OUTER JOIN projekat ON zaposleni.projekat_id = projekat.id_p;
 
+SELECT * FROM zaposleni LEFT OUTER JOIN projekat ON zaposleni.projekat_id = projekat.id_p
+UNION                                                                                         /* FULL OUTER JOIN - radi se sa UNION, leve i desne outer join... */
+SELECT * FROM zaposleni RIGHT OUTER JOIN projekat ON zaposleni.projekat_id = projekat.id_p;
 
-
+SELECT projekat.naziv, SUM(zaposleni.plata) FROM projekat LEFT OUTER JOIN zaposleni ON zaposleni.projekat_id = projekat.id_p GROUP BY projekat.naziv;
 
 
 
